@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { Button } from "../packages/component/src/button";
 </script>
-
 <template>
-  <div>
+  <div class="main">
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
+    <Button />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+align-content: center;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
