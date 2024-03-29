@@ -1,0 +1,16 @@
+{
+    "name": "@pc-vue3-wk-ui/components",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@pc-vue3-ui/theme-chalk": "workspace:^",
+      "@pc-vue3-ui/utils": "workspace:^"
+    }
+  }
