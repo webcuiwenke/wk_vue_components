@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { uiButton } from "../packages/component/src/uiButton";
+// import { uiButton } from "../packages/component/src/uiButton";
 </script>
 <template>
   <div class="main">
@@ -9,7 +9,7 @@ import { uiButton } from "../packages/component/src/uiButton";
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
-    <uiButton />
+    <!-- <uiButton /> -->
   </div>
 </template>
 

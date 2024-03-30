@@ -2,12 +2,9 @@ import path from 'path'
 import fs from 'fs-extra'
 import { fileURLToPath } from "node:url";
 import { defineConfig, build} from 'vite'
-import vue from '@vitejs/plugin-vue'
-
 // 基础配置
 const baseConfig = defineConfig({
   publicDir: false,
-  plugins: [vue()]
 })
 const rollupOptions = defineConfig({
   // that shouldn't be bundled
@@ -19,8 +16,9 @@ const rollupOptions = defineConfig({
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
+
 // 组件库全局入口
-const compontsDir = path.resolve(__dirname, "../packages/components")
+const compontsDir = path.resolve(__dirname, "../packages/component")
 // 输出目录
 const outputDir = path.resolve(__dirname, "../build")
 // 生成 package.json
