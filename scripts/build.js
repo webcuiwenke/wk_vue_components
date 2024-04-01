@@ -21,7 +21,7 @@ const rollupOptions = defineConfig({
   }
 })
 
-const createPackageJson = (name = "pc-vue3-wk-ui") => {
+const createPackageJson = (name = "vue3-plugins") => {
   const fileStr = `{
     "name": "${name}",
     "version": "1.0.0",
@@ -30,10 +30,10 @@ const createPackageJson = (name = "pc-vue3-wk-ui") => {
     "module":"${name}.mjs",
     "repository": {
       "type": "git",
-      "url": "git+https://github.com/GGXXMM/vue3-ui.git"
+      "url": "git+https://github.com/webcuiwenke/wk_vue_components.git"
     },
-    "keywords": ["vue3", "组件库", "UI"],
-    "author": "guoxinming",
+    "keywords": ["vue3", "组件库", "UI","表单校验","公共函数"],
+    "author": "cwk",
     "license": "ISC"
   }
   `
@@ -93,7 +93,7 @@ const buildLib = async () => {
   try {
     await fs.emptyDir(outputDir)
 
-    await buildAll(componentsDir, "pc-vue3-wk-ui")
+    await buildAll(componentsDir, "vue3-plugins")
 
     fs.readdirSync(componentsDir)
       .filter(name => {
