@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "build:component": "node ./scripts/build.js",
+    "build:plugin": "node ./scripts/build.js",
     "preview": "vite preview"
   },
   "dependencies": {

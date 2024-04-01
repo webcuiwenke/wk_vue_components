@@ -6,7 +6,7 @@ import { defineConfig, build} from 'vite'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const componentsDir = path.resolve(__dirname, "../packages/component")
+const componentsDir = path.resolve(__dirname, "../packages/components")
 const utilsDir = path.resolve(__dirname, "../packages/utils")
 const outputDir = path.resolve(__dirname, "../build")
 
