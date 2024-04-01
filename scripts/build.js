@@ -2,33 +2,32 @@ import path from 'path'
 import fs from 'fs-extra'
 import { fileURLToPath } from "node:url";
 import { defineConfig, build} from 'vite'
-// 基础配置
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const componentsDir = path.resolve(__dirname, "../packages/component")
+const utilsDir = path.resolve(__dirname, "../packages/utils")
+const outputDir = path.resolve(__dirname, "../build")
+
 const baseConfig = defineConfig({
   publicDir: false,
 })
+
 const rollupOptions = defineConfig({
-  // that shouldn't be bundled
   external: ["vue"],
   globals: {
     vue: "Vue"
   }
 })
-const __filename = fileURLToPath(import.meta.url);
 
-const __dirname = path.dirname(__filename);
-
-// 组件库全局入口
-const compontsDir = path.resolve(__dirname, "../packages/component")
-// 输出目录
-const outputDir = path.resolve(__dirname, "../build")
-// 生成 package.json
-const createPackageJson = name => {
+const createPackageJson = (name = "pc-vue3-wk-ui") => {
   const fileStr = `{
-    "name": "${name ? name : "pc-vue3-wk-ui"}",
+    "name": "${name}",
     "version": "1.0.0",
     "description": "Vue3组件库",
-    "main": "${name ? "index.umd.js" : "pc-vue3-wk-ui.umd.js"}",
-    "module":"${name ? "index.mjs" : "pc-vue3-wk-ui.mjs"}",
+    "main": "${name}.umd.js",
+    "module":"${name}.mjs",
     "repository": {
       "type": "git",
       "url": "git+https://github.com/GGXXMM/vue3-ui.git"
@@ -38,71 +37,88 @@ const createPackageJson = name => {
     "license": "ISC"
   }
   `
-  // 单个组件 or 全量
-  const filePath = path.resolve(
-    outputDir,
-    name ? `${name}/package.json` : `package.json`
-  )
-
+  const filePath = path.resolve(outputDir, `${name}/package.json`)
   fs.outputFile(filePath, fileStr, "utf-8")
 }
 
-/** 单组件按需构建 */
-const buildSingle = async name => {
-  await build(
-    defineConfig({
-      ...baseConfig,
-      build: {
-        lib: {
-          entry: path.resolve(compontsDir, name),
-          name: "index",
-          fileName: "index",
-          formats: ["es", "umd"]
-        },
-        rollupOptions,
-        outDir: path.resolve(outputDir, name)
-      }
-    })
-  )
+const buildSingle = async (name, entry, outputName) => {
+  try {
+    await build(
+      defineConfig({
+        ...baseConfig,
+        build: {
+          lib: {
+            entry,
+            name: "index",
+            fileName: outputName,
+            formats: ["es", "umd"]
+          },
+          rollupOptions,
+          outDir: path.resolve(outputDir, name)
+        }
+      })
+    )
 
-  createPackageJson(name)
+    createPackageJson(name)
+  } catch (error) {
+    console.error(`Error building ${name}:`, error)
+  }
 }
 
-/** 全量构建 */
-const buildAll = async () => {
-  await build(
-    defineConfig({
-      ...baseConfig,
-      build: {
-        lib: {
-          entry: compontsDir,
-          name: "pc-vue3-wk-ui",
-          fileName: "pc-vue3-wk-ui",
-          formats: ["es", "umd"]
-        },
-        rollupOptions,
-        outDir: outputDir
-      }
-    })
-  )
+const buildAll = async (entry, outputName) => {
+  try {
+    await build(
+      defineConfig({
+        ...baseConfig,
+        build: {
+          lib: {
+            entry,
+            name: outputName,
+            fileName: outputName,
+            formats: ["es"]
+          },
+          rollupOptions,
+          outDir: outputDir
+        }
+      })
+    )
 
-  createPackageJson()
+    createPackageJson(outputName)
+  } catch (error) {
+    console.error('Error building all components:', error)
+  }
 }
 
 const buildLib = async () => {
-  await buildAll()
+  try {
+    await fs.emptyDir(outputDir)
 
-  // 按需打包
-  fs.readdirSync(compontsDir)
-    .filter(name => {
-      // 获取组件的目录
-      const componentDir = path.resolve(compontsDir, name)
-      const isDir = fs.lstatSync(componentDir).isDirectory()
-      return isDir && fs.readdirSync(componentDir).includes("index.ts")
-    })
-    .forEach(async name => {
-      await buildSingle(name)
-    })
+    await buildAll(componentsDir, "pc-vue3-wk-ui")
+
+    fs.readdirSync(componentsDir)
+      .filter(name => {
+        const componentDir = path.resolve(componentsDir, name)
+        const isDir = fs.lstatSync(componentDir).isDirectory()
+        return isDir && fs.readdirSync(componentDir).includes("index.ts")
+      })
+      .forEach(async name => {
+        const entry = path.resolve(componentsDir, name)
+        await buildSingle(name, entry, name)
+      })
+
+    fs.readdirSync(utilsDir)
+      .filter(name => {
+        const utilDir = path.resolve(utilsDir, name)
+        const isDir = fs.lstatSync(utilDir).isDirectory()
+        return isDir && fs.readdirSync(utilDir).includes("index.ts")
+      })
+      .forEach(async name => {
+        const entry = path.resolve(utilsDir, name)
+        await buildSingle(name, entry, `utils-${name}`)
+      })
+  } catch (error) {
+    console.error('Error building library:', error)
+  }
 }
 
 buildLib()
