@@ -37,7 +37,7 @@ const buildSingle = async (name, entry, outputName) => {
       })
     )
 
-    createPackageJson(name,outputDir)
+    createPackageJson('vue3-plugins',outputDir)
   } catch (error) {
     console.error(`Error building ${name}:`, error)
   }
@@ -61,7 +61,7 @@ const buildAll = async (entry, outputName) => {
       })
     )
 
-    createPackageJson(outputName,outputDir)
+    createPackageJson('vue3-plugins',outputDir)
   } catch (error) {
     console.error('Error building all components:', error)
   }
@@ -76,8 +76,8 @@ const buildLib = async () => {
     fs.readdirSync(inputDir)
       .filter(name => {
         const componentDir = path.resolve(inputDir, name)
-        const isDir = fs.lstatSync(inputDir).isDirectory()
-        return isDir && fs.readdirSync(inputDir).includes("index.ts")
+        const isDir = fs.lstatSync(componentDir).isDirectory()
+        return isDir && fs.readdirSync(componentDir).includes("index.ts")
       })
       .forEach(async name => {
         const entry = path.resolve(inputDir, name)
