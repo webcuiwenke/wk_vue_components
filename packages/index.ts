@@ -1,4 +1,4 @@
-import { uiButton } from "./components"
-import useTable from "./hooks/useTable"
-export { uiButton, useTable }
+import { uiButton } from "./uiButton"
+import { uiInput } from "./uiInput";
+export { uiButton, uiInput }
 
