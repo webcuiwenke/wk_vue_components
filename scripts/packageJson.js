@@ -5,8 +5,8 @@ const createPackageJson = (name = "`vue3-plugins`",outputDir) => {
       "name": "${name}",
       "version": "1.0.5",
       "description": "Vue3组件库",
-      "main": "${name}.umd.js",
-      "module":"${name}.mjs",
+      "main": "index.umd.js",
+      "module":"index.mjs",
       "repository": {
         "type": "git",
         "url": "git+https://github.com/webcuiwenke/wk_vue_components.git"
