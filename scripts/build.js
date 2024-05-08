@@ -19,20 +19,43 @@ const buildLib = async () => {
             globals: {
               vue: "Vue",
             },
-            input: ["packages/index.ts"],
-            output: {
-              dir: outputDir,
-              //让打包目录和我们目录对应
-              preserveModules: true,
-              entryFileNames: "[name].js",
-              chunkFileNames: "[name].js",
-              assetFileNames: "[name].[ext]",
-            },
+            input: inputDir,
+            output: [
+              {
+                format: "es",
+                //不用打包成.es.js,这里我们想把它打包成.js
+                entryFileNames: "[name].js",
+                //让打包目录和我们目录对应
+                preserveModules: true,
+                //配置打包根目录
+                dir: outputDir,
+                preserveModulesRoot: "packages",
+                exports: "named",
+                globals: {
+                  vue: "Vue",
+                },
+              },
+              {
+                format: "cjs",
+                //不用打包成.mjs
+                entryFileNames: "[name].js",
+                //让打包目录和我们目录对应
+                preserveModules: true,
+                //配置打包根目录
+                dir: outputDir,
+                preserveModulesRoot: "packages",
+                exports: "named",
+                globals: {
+                  vue: "Vue",
+                },
+              },
+            ],
           },
           lib: {
+            entry: inputDir,
             name: "vue3-plugins",
             fileName: "vue3-plugins",
-            formats: ["es", "umd", "cjs"],
+            // formats: ["es", "umd", "cjs"],
           },
         },
       })
