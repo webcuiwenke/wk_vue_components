@@ -3,7 +3,7 @@ import fs from 'fs-extra'
 const createPackageJson = (name = "`vue3-plugins`",outputDir) => {
     const fileStr = `{
       "name": "${name}",
-      "version": "1.0.5",
+      "version": "1.0.8",
       "description": "Vue3组件库",
       "main": "index.js",
       "module":"index.js",

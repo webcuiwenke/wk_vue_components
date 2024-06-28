@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { uiButton } from "../packages/index";
-console.log(uiButton);
 </script>
 <template>
   <div>
